@@ -1,0 +1,65 @@
+[gd_scene load_steps=4 format=3 uid="uid://oy2hrvwpp482"]
+
+[ext_resource type="Texture2D" uid="uid://jhe3runoirda" path="res://signal_forward_example/icon.svg" id="1_cdo2i"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gsfaa"]
+
+[sub_resource type="GDScript" id="GDScript_ogx21"]
+script/source = "extends Button
+
+signal on_selected(node: Node)
+@export var can_select = true
+var selected = false
+
+
+func _ready() -> void:
+	text = name
+
+
+func _on_button_down() -> void:
+	if can_select:
+		selected = not selected
+		%Label.text = \"√\" if selected else \"\"
+		set_self_modulate(\"#535353\" if selected else Color.WHITE)
+	on_selected.emit(self)
+"
+
+[node name="Item" type="Button"]
+unique_name_in_owner = true
+offset_right = 128.0
+offset_bottom = 128.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 30
+theme_override_styles/focus = SubResource("StyleBoxEmpty_gsfaa")
+icon = ExtResource("1_cdo2i")
+flat = true
+icon_alignment = 1
+script = SubResource("GDScript_ogx21")
+
+[node name="Label" type="Label" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -34.5
+offset_right = 20.0
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.984314, 1, 1, 1)
+theme_override_font_sizes/font_size = 45
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 1
+uppercase = true
+
+[connection signal="button_down" from="." to="." method="_on_button_down"]

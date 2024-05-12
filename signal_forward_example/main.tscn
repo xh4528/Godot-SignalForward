@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dl8bfxl1q4h1i"]
+
+[ext_resource type="PackedScene" uid="uid://cw31fjq2oq81r" path="res://signal_forward_example/example1.tscn" id="1_hg1ql"]
+[ext_resource type="PackedScene" uid="uid://bdcpl2wjqq2ne" path="res://signal_forward_example/example2.tscn" id="2_xtelq"]
+
+[node name="Main" type="Node2D"]
+
+[node name="Example1" parent="." instance=ExtResource("1_hg1ql")]
+
+[node name="Example2" parent="." instance=ExtResource("2_xtelq")]
+offset_top = 336.0
+offset_bottom = 376.0

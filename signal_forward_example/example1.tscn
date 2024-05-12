@@ -1,0 +1,99 @@
+[gd_scene load_steps=5 format=3 uid="uid://cw31fjq2oq81r"]
+
+[ext_resource type="Script" path="res://addons/signal_forward/signal_forward_node.gd" id="2_ofdt4"]
+[ext_resource type="PackedScene" uid="uid://oy2hrvwpp482" path="res://signal_forward_example/item.tscn" id="3_q5hch"]
+
+[sub_resource type="GDScript" id="GDScript_dhjw4"]
+script/source = "extends Control
+
+var items: Array[Node] = []
+
+
+func _on_select_forward(item: Node) -> void:
+	if items.has(item):
+		items.erase(item)
+	else:
+		items.append(item)
+	%Label.text = (
+		\"selected count: %s\\n%s\" % [str(items.size()), items.map(func(i): return i.name)]
+	)
+"
+
+[sub_resource type="GDScript" id="GDScript_fsv3a"]
+script/source = "extends Button
+
+
+# Called when the node enters
+
+
+func _on_button_down() -> void:
+	get_tree().reload_current_scene()
+"
+
+[node name="Example1" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = SubResource("GDScript_dhjw4")
+
+[node name="SignalForward" type="Node" parent="."]
+script = ExtResource("2_ofdt4")
+forward_signal_name = "on_selected"
+monitor_method = 1
+monitor_node_paths = Array[NodePath]([NodePath("."), NodePath("../HBoxContainer")])
+
+[node name="Item1" parent="SignalForward" instance=ExtResource("3_q5hch")]
+unique_name_in_owner = false
+offset_right = 136.0
+offset_bottom = 136.0
+
+[node name="Item2" parent="SignalForward" instance=ExtResource("3_q5hch")]
+unique_name_in_owner = false
+offset_left = 140.0
+offset_right = 276.0
+offset_bottom = 136.0
+
+[node name="Item3" parent="SignalForward" instance=ExtResource("3_q5hch")]
+unique_name_in_owner = false
+offset_left = 280.0
+offset_right = 416.0
+offset_bottom = 136.0
+
+[node name="Label" type="Label" parent="SignalForward"]
+unique_name_in_owner = true
+offset_left = 420.0
+offset_right = 664.0
+offset_bottom = 42.0
+size_flags_vertical = 0
+theme_override_font_sizes/font_size = 20
+text = "selected count: 0"
+
+[node name="Button" type="Button" parent="."]
+layout_mode = 0
+offset_left = 984.0
+offset_top = 12.0
+offset_right = 1134.0
+offset_bottom = 50.0
+text = "reset
+"
+script = SubResource("GDScript_fsv3a")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
+offset_top = 131.0
+offset_right = 416.0
+offset_bottom = 267.0
+
+[node name="Item4" parent="HBoxContainer" instance=ExtResource("3_q5hch")]
+unique_name_in_owner = false
+layout_mode = 2
+
+[node name="Item5" parent="HBoxContainer" instance=ExtResource("3_q5hch")]
+unique_name_in_owner = false
+layout_mode = 2
+
+[node name="Item6" parent="HBoxContainer" instance=ExtResource("3_q5hch")]
+unique_name_in_owner = false
+layout_mode = 2
+
+[connection signal="forward" from="SignalForward" to="." method="_on_select_forward"]
+[connection signal="button_down" from="Button" to="Button" method="_on_button_down"]
